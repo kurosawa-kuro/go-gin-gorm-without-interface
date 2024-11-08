@@ -2,7 +2,7 @@ package controller
 
 import (
 	"go-gin-gorm-without-interface/internal/models"
-	"go-gin-gorm-without-interface/internal/services"
+	services "go-gin-gorm-without-interface/internal/service"
 	"net/http"
 
 	"github.com/gin-gonic/gin"

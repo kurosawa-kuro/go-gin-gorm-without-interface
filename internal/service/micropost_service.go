@@ -1,4 +1,4 @@
-package services
+package service
 
 import (
 	"go-gin-gorm-without-interface/internal/models"

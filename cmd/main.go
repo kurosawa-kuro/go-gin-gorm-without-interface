@@ -8,7 +8,7 @@ import (
 	"go-gin-gorm-without-interface/internal/controller"
 	"go-gin-gorm-without-interface/internal/database"
 	"go-gin-gorm-without-interface/internal/models"
-	"go-gin-gorm-without-interface/internal/services"
+	"go-gin-gorm-without-interface/internal/service"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
@@ -37,7 +37,7 @@ func main() {
 	r := gin.Default()
 
 	// サービスを初期化
-	micropostService := services.NewMicropostService(db)
+	micropostService := service.NewMicropostService(db)
 
 	// サービスをコントローラに注入
 	micropostController := controller.NewMicropostController(micropostService)
