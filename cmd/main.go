@@ -10,10 +10,19 @@ import (
 	"go-gin-gorm-without-interface/internal/models"
 	"go-gin-gorm-without-interface/internal/services"
 
+	_ "go-gin-gorm-without-interface/docs" // docs は swag init で生成される
+
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
+// @title           Your API Title
+// @version         1.0
+// @description     Your API Description
+// @host           localhost:8080
+// @BasePath       /
 func main() {
 	env := os.Getenv("APP_ENV")
 	if env == "" {
@@ -35,6 +44,9 @@ func main() {
 	db.AutoMigrate(&models.Micropost{})
 
 	r := gin.Default()
+
+	// Swagger のルートを追加
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	// サービスを初期化
 	micropostService := services.NewMicropostService(db)
