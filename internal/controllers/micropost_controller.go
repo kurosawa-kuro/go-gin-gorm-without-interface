@@ -3,8 +3,8 @@ package controllers
 import (
 	"net/http"
 
-	"go-gin-gorm-without-interface/models"
-	"go-gin-gorm-without-interface/services"
+	"go-gin-gorm-without-interface/internal/models"
+	"go-gin-gorm-without-interface/internal/services"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"

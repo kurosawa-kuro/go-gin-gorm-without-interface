@@ -1,19 +1,28 @@
 package main
 
 import (
+	"fmt"
 	"log"
+	"os"
 
-	"go-gin-gorm-without-interface/controllers"
-	"go-gin-gorm-without-interface/database"
-	"go-gin-gorm-without-interface/models"
+	"go-gin-gorm-without-interface/internal/controllers"
+	"go-gin-gorm-without-interface/internal/database"
+	"go-gin-gorm-without-interface/internal/models"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
 
 func main() {
-	if err := godotenv.Load(".env.development"); err != nil {
-		log.Fatal("Error loading .env.development file")
+	env := os.Getenv("APP_ENV")
+	if env == "" {
+		env = "development"
+	}
+
+	// configs ディレクトリからの .env ファイル読み込み
+	err := godotenv.Load(fmt.Sprintf("configs/.env.%s", env))
+	if err != nil {
+		log.Fatalf("Error loading .env.%s file", env)
 	}
 
 	db, err := database.InitDB()

@@ -1,7 +1,7 @@
 package services
 
 import (
-	"go-gin-gorm-without-interface/models"
+	"go-gin-gorm-without-interface/internal/models"
 
 	"gorm.io/gorm"
 )
