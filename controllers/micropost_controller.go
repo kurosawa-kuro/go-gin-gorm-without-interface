@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"go-gin-gorm-without-interface/models"
+	"go-gin-gorm-without-interface/services"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -24,7 +25,7 @@ func (mc *MicropostController) Create(c *gin.Context) {
 		return
 	}
 
-	if err := micropost.Create(mc.db); err != nil {
+	if err := services.NewMicropostService(mc.db).Create(&micropost); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
@@ -33,7 +34,7 @@ func (mc *MicropostController) Create(c *gin.Context) {
 }
 
 func (mc *MicropostController) GetAll(c *gin.Context) {
-	microposts, err := models.GetAllMicroposts(mc.db)
+	microposts, err := services.NewMicropostService(mc.db).GetAll()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -43,8 +44,8 @@ func (mc *MicropostController) GetAll(c *gin.Context) {
 }
 
 func (mc *MicropostController) GetByID(c *gin.Context) {
-	var micropost models.Micropost
-	if err := micropost.FindByID(mc.db, c.Param("id")); err != nil {
+	micropost, err := services.NewMicropostService(mc.db).FindByID(c.Param("id"))
+	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Record not found!"})
 		return
 	}
@@ -53,8 +54,8 @@ func (mc *MicropostController) GetByID(c *gin.Context) {
 }
 
 func (mc *MicropostController) Update(c *gin.Context) {
-	var micropost models.Micropost
-	if err := micropost.FindByID(mc.db, c.Param("id")); err != nil {
+	micropost, err := services.NewMicropostService(mc.db).FindByID(c.Param("id"))
+	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Record not found!"})
 		return
 	}
@@ -65,7 +66,7 @@ func (mc *MicropostController) Update(c *gin.Context) {
 		return
 	}
 
-	if err := micropost.Update(mc.db, newMicropost); err != nil {
+	if err := services.NewMicropostService(mc.db).Update(micropost, newMicropost); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
@@ -74,13 +75,13 @@ func (mc *MicropostController) Update(c *gin.Context) {
 }
 
 func (mc *MicropostController) Delete(c *gin.Context) {
-	var micropost models.Micropost
-	if err := micropost.FindByID(mc.db, c.Param("id")); err != nil {
+	micropost, err := services.NewMicropostService(mc.db).FindByID(c.Param("id"))
+	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Record not found!"})
 		return
 	}
 
-	if err := micropost.Delete(mc.db); err != nil {
+	if err := services.NewMicropostService(mc.db).Delete(micropost); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
