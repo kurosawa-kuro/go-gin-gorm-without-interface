@@ -5,9 +5,10 @@ import (
 	"log"
 	"os"
 
-	"go-gin-gorm-without-interface/internal/controllers"
+	"go-gin-gorm-without-interface/internal/controller"
 	"go-gin-gorm-without-interface/internal/database"
 	"go-gin-gorm-without-interface/internal/models"
+	"go-gin-gorm-without-interface/internal/services"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
@@ -35,14 +36,18 @@ func main() {
 
 	r := gin.Default()
 
-	mc := controllers.NewMicropostController(db)
+	// サービスを初期化
+	micropostService := services.NewMicropostService(db)
+
+	// サービスをコントローラに注入
+	micropostController := controller.NewMicropostController(micropostService)
 
 	// ルーティング
-	r.POST("/microposts", mc.Create)
-	r.GET("/microposts", mc.GetAll)
-	r.GET("/microposts/:id", mc.GetByID)
-	r.PUT("/microposts/:id", mc.Update)
-	r.DELETE("/microposts/:id", mc.Delete)
+	r.POST("/microposts", micropostController.Create)
+	r.GET("/microposts", micropostController.GetAll)
+	r.GET("/microposts/:id", micropostController.GetByID)
+	r.PUT("/microposts/:id", micropostController.Update)
+	r.DELETE("/microposts/:id", micropostController.Delete)
 
 	r.Run()
 }
