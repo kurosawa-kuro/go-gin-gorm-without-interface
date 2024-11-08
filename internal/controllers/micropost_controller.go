@@ -1,8 +1,8 @@
-package controller
+package controllers
 
 import (
 	"go-gin-gorm-without-interface/internal/models"
-	services "go-gin-gorm-without-interface/internal/service"
+	"go-gin-gorm-without-interface/internal/services"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
